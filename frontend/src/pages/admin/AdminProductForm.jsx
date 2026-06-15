@@ -27,6 +27,29 @@ function AdminProductForm() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleImageUpload = async () => {
+    if (!selectedFile) {
+      alert("Please select an image file first.");
+      return;
+    }
+    setUploadingImage(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+      const res = await API.post("/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setForm((prev) => ({ ...prev, image: res.data.imageUrl }));
+      alert("Image uploaded successfully! ✅");
+    } catch (err) {
+      alert(err.response?.data?.message || "Image upload failed");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -411,11 +434,35 @@ function AdminProductForm() {
                 type="text" 
                 name="image"
                 className="form-input-text"
-                placeholder="e.g. /images/iphone 15.jpg or absolute web URLs"
+                placeholder="e.g. /images/product.jpg or https://..."
                 value={form.image}
                 onChange={handleChange}
                 required
               />
+              <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                <label style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 600 }}>Or upload from device:</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                  style={{ fontSize: "0.85rem" }}
+                />
+                <button
+                  type="button"
+                  onClick={handleImageUpload}
+                  disabled={uploadingImage || !selectedFile}
+                  style={{
+                    padding: "8px 16px", background: "#6366f1", color: "white",
+                    border: "none", borderRadius: "6px", cursor: "pointer",
+                    fontSize: "0.85rem", fontWeight: 600, opacity: uploadingImage || !selectedFile ? 0.6 : 1
+                  }}
+                >
+                  {uploadingImage ? "Uploading..." : "📤 Upload Image"}
+                </button>
+                {form.image && (
+                  <img src={form.image} alt="preview" style={{ height: "50px", borderRadius: "6px", border: "1px solid #e2e8f0" }} />
+                )}
+              </div>
             </div>
 
             {/* Sub images */}

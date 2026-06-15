@@ -7,7 +7,22 @@ const Product = require("../models/Product");
 // @access  Private
 const createOrder = async (req, res) => {
   try {
-    const { paymentMethod } = req.body;
+    const { 
+      paymentMethod,
+      name, nano,
+      email, mall,
+      address,
+      pincode,
+      category, caster,
+      description,
+      image, maining,
+      size,
+      quantity,
+      discount,
+      orderDate, orderbater,
+      deliveryDate, deliverydate,
+      orderStatus
+    } = req.body;
 
     // Get user's cart
     const cart = await Cart.findOne({ userId: req.user.id }).populate("items.productId");
@@ -54,7 +69,26 @@ const createOrder = async (req, res) => {
       totalAmount,
       paymentMethod: paymentMethod || "UPI",
       // Set tentative delivery date (e.g. 5 days from now)
-      deliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+      deliveryDate: deliveryDate || new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+      deliverydate: deliverydate || new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+      name: name || nano || (orderItems.length > 0 ? orderItems[0].name : ""),
+      nano: nano || name || (orderItems.length > 0 ? orderItems[0].name : ""),
+      email: email || mall || "",
+      mall: mall || email || "",
+      address: address || "",
+      pincode: pincode || "",
+      category: category || caster || (orderItems.length > 0 && orderItems[0].productId ? orderItems[0].productId.category : ""),
+      caster: caster || category || (orderItems.length > 0 && orderItems[0].productId ? orderItems[0].productId.category : ""),
+      description: description || "",
+      image: image || maining || (orderItems.length > 0 ? orderItems[0].image : ""),
+      maining: maining || image || (orderItems.length > 0 ? orderItems[0].image : ""),
+      size: size || "",
+      quantity: quantity || (orderItems.length > 0 ? orderItems[0].quantity : 1),
+      discount: discount || 0,
+      orderDate: orderDate || orderbater || new Date(),
+      orderbater: orderbater || orderDate || new Date().toISOString(),
+      orderStatus: orderStatus || "order placed",
+      status: "Pending"
     });
 
     const createdOrder = await order.save();

@@ -45,6 +45,10 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     default: "Unisex",
   },
+  rating: {
+    type: Number,
+    default: 0,
+  },
   featured: {
     type: Boolean,
     default: false,

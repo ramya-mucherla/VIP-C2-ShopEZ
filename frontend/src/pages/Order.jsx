@@ -33,18 +33,40 @@ function Orders() {
         product: item.name,
         price: `₹${item.price.toLocaleString("en-IN")}`,
         status: order.status,
-        orderDate: new Date(order.orderDate).toLocaleDateString("en-IN", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }),
-        deliveryDate: order.deliveryDate
+        orderDate: (order.orderDate && !isNaN(new Date(order.orderDate).getTime()))
+          ? new Date(order.orderDate).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })
+          : (order.orderbater && !isNaN(new Date(order.orderbater).getTime()))
+          ? new Date(order.orderbater).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })
+          : new Date().toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            }),
+        deliveryDate: (order.deliveryDate && !isNaN(new Date(order.deliveryDate).getTime()))
           ? new Date(order.deliveryDate).toLocaleDateString("en-IN", {
               day: "2-digit",
               month: "short",
               year: "numeric",
             })
-          : "N/A",
+          : (order.deliverydate && !isNaN(new Date(order.deliverydate).getTime()))
+          ? new Date(order.deliverydate).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })
+          : new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            }),
         qty: item.quantity,
         payment: order.paymentMethod,
         image: item.image,

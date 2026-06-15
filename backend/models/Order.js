@@ -2,28 +2,87 @@ const mongoose = require("mongoose");
 
 const OrderSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    type: String,
   },
+  nano: {
+    type: String,
+  },
+  name: {
+    type: String,
+  },
+  mall: {
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  pincode: {
+    type: String,
+  },
+  caster: {
+    type: String,
+  },
+  category: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  maining: {
+    type: String,
+  },
+  image: {
+    type: String,
+  },
+  size: {
+    type: String,
+  },
+  quantity: {
+    type: Number,
+  },
+  discount: {
+    type: Number,
+  },
+  paymentMethod: {
+    type: String,
+  },
+  orderDate: {
+    type: Date,
+    default: Date.now,
+  },
+  orderbater: {
+    type: Date,
+    default: Date.now,
+  },
+  deliverydate: {
+    type: String,
+  },
+  deliveryDate: {
+    type: String,
+  },
+  orderStatus: {
+    type: String,
+    default: "order placed",
+  },
+
+  // Legacy fields to support the existing functionality
   items: [
     {
       productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
-        required: true,
       },
       name: {
         type: String,
-        required: true,
       },
       price: {
         type: Number,
-        required: true,
       },
       quantity: {
         type: Number,
-        required: true,
       },
       image: {
         type: String,
@@ -32,24 +91,13 @@ const OrderSchema = new mongoose.Schema({
   ],
   totalAmount: {
     type: Number,
-    required: true,
-  },
-  paymentMethod: {
-    type: String,
-    default: "UPI",
   },
   status: {
     type: String,
     enum: ["Pending", "Shipped", "Delivered", "Cancelled"],
     default: "Pending",
   },
-  orderDate: {
-    type: Date,
-    default: Date.now,
-  },
-  deliveryDate: {
-    type: Date,
-  },
 });
 
 module.exports = mongoose.model("Order", OrderSchema);
+

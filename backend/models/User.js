@@ -19,6 +19,14 @@ const UserSchema = new mongoose.Schema({
     enum: ["customer", "admin"],
     default: "customer",
   },
+  phone: {
+    type: String,
+    default: "",
+  },
+  address: {
+    type: String,
+    default: "",
+  },
   createdAt: {
     type: Date,
     default: Date.now,

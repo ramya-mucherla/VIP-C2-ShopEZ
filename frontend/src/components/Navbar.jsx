@@ -26,8 +26,10 @@ function Navbar() {
           <Link to="/">Home</Link>
           <Link to="/products">Products</Link>
           <Link to="/cart">Cart</Link>
-          <Link to="/order">Order</Link>
-          {user?.role === "admin" && <Link to="/admin">Admin Dashboard</Link>}
+          <Link to="/wishlist">Wishlist</Link>
+          <Link to="/order">Orders</Link>
+          <Link to="/profile">Profile</Link>
+          {user?.role === "admin" && <Link to="/admin">Admin</Link>}
 
           {/* 🔐 AUTH LOGIC */}
           {!user ? (

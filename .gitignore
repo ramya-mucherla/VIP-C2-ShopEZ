@@ -15,6 +15,9 @@ dist/
 **/dist/
 build/
 
+# Uploaded files
+backend/uploads/
+
 # IDEs and Editors
 .vscode/
 .idea/

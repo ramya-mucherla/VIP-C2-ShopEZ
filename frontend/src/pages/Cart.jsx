@@ -9,6 +9,20 @@ function Cart() {
   const navigate = useNavigate();
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [shippingDetails, setShippingDetails] = useState({
+    name: "",
+    email: "",
+    address: "",
+    pincode: "",
+    size: "M",
+  });
+
+  const handleShippingChange = (e) => {
+    setShippingDetails({
+      ...shippingDetails,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const fetchCart = async () => {
     try {
@@ -47,8 +61,21 @@ function Cart() {
   };
 
   const handleCheckout = async () => {
+    if (!shippingDetails.name || !shippingDetails.email || !shippingDetails.address || !shippingDetails.pincode) {
+      alert("Please fill in all shipping details (Name, Email, Address, Pincode).");
+      return;
+    }
     try {
-      await API.post("/orders", { paymentMethod: "UPI" });
+      await API.post("/orders", {
+        paymentMethod: "UPI",
+        name: shippingDetails.name,
+        nano: shippingDetails.name,
+        email: shippingDetails.email,
+        mall: shippingDetails.email,
+        address: shippingDetails.address,
+        pincode: shippingDetails.pincode,
+        size: shippingDetails.size,
+      });
       alert("Order placed successfully!");
       navigate("/order");
     } catch (error) {
@@ -120,6 +147,48 @@ function Cart() {
 
           {/* Right side - summary */}
           <div className="cart-summary">
+            <h2 style={{ marginBottom: '15px' }}>Shipping Details</h2>
+            <div className="shipping-form" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={shippingDetails.name}
+                onChange={handleShippingChange}
+                style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.95rem' }}
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={shippingDetails.email}
+                onChange={handleShippingChange}
+                style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.95rem' }}
+                required
+              />
+              <input
+                type="text"
+                name="address"
+                placeholder="Shipping Address"
+                value={shippingDetails.address}
+                onChange={handleShippingChange}
+                style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.95rem' }}
+                required
+              />
+              <input
+                type="text"
+                name="pincode"
+                placeholder="Pincode"
+                value={shippingDetails.pincode}
+                onChange={handleShippingChange}
+                style={{ padding: '10px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '0.95rem' }}
+                required
+              />
+            </div>
+
+            <hr style={{ margin: '15px 0', border: '0', borderTop: '1px solid #eee' }} />
+
             <h2>Price Details</h2>
 
             <div className="summary-row">
